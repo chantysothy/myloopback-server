@@ -1,0 +1,15 @@
+{
+
+  "facebook-token": {
+    "provider": "facebook-token",
+    "module": "passport-facebook-token",
+    "strategy": "FacebookTokenStrategy",
+    "clientID": "{your-client-id}",
+    "clientSecret": "{your-client-secret}",
+    "callbackURL": "/auth/facebook-token/callback",
+    "successRedirect": "/auth/facebook-token/success",
+    "failureRedirect": "/auth/facebook-token/failure",
+    "failureFlash": true,
+    "json-info": "set json to true to use direct json instead of custom redirect routes"
+  }
+}

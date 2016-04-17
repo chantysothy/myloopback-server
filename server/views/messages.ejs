@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1>Simple Loopback Test</h1>
+
+  <!-- check simple var -->
+    <% if (locals.subtitle) { %>
+    <h2><%= subtitle %></h2>
+  <% } %>
+
+  <div id="log"></div>
+  <!-- form to post add -->
+  <form role="form" method="post" action="/api/Messages">
+    <div class="form-group">
+      <div class="col-xs-3">
+        <input class="form-control" id="name" type="text" placeholder="name" name="name">
+      </div>
+      <div class="col-xs-7">
+        <input class="form-control" id="description" type="text" placeholder="description" name="description">
+      </div>
+      <div class="col-xs-1">
+        <input class="form-control" id="categoryId" type="text" placeholder="catId" name="categoryId">
+      </div>
+      <div class="col-xs-1">
+        <button type="submit" class="btn btn-default">Ajouter</button>
+      </div>
+    </div>
+  </form>
+  <!-- with array -->
+  <% if (locals.messages) { %>
+    <p><%= messages.length %> occurences</p>
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Categorie</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+
+
+    <% for(var i=0; i<messages.length; i++) {
+       if (messages[i].category()){categoryname=messages[i].category().name}else{categoryname=""}
+    %>
+
+      <tr>
+        <td><%= messages[i].name %></td>
+        <td><%= messages[i].description %></td>
+        <td><%= messages[i].categoryId %> - <%= categoryname %></td>
+        <td><button class="delete" formaction="/api/Messages/<%= messages[i].id %>">DEL</button>
+          </td>
+      </tr>
+    <% } %>
+    </tbody>
+    </table>
+
+
+  <% } %>
+
+</div>
+<script>
+
+
+  $(document).ready(function() {
+    $("button.delete").click(function () {
+      var url = $(this).attr("formaction");
+      console.log(url);
+
+        $.ajax({
+          url: url, // La ressource ciblée
+          type: 'DELETE', // Le type de la requête HTTP.
+          success: function (data, statut) { // success est toujours en place, bien sûr !
+            //console.log(data);
+
+            alert(statut);
+            location.reload();
+          },
+
+
+          error: function (resultat, statut, erreur) {
+            alert("Erreur "+resultat);
+          }
+        });
+      }
+    )
+  });
+
+
+</script>
+</body>
+</html>

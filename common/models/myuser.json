@@ -1,0 +1,58 @@
+{
+  "name": "MyUser",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "messages": {
+      "type": "hasMany",
+      "model": "Message",
+      "foreignKey": "senderId",
+      "through": "MessageSent"
+    },
+    "identities": {
+      "type": "hasMany",
+      "model": "userIdentity",
+      "foreignKey": "userId"
+    },
+    "credentials": {
+      "type": "hasMany",
+      "model": "userCredential",
+      "foreignKey": "userId"
+    },
+     "friends": {
+        "type": "hasMany",
+        "model": "MyUser",
+        "foreignKey": "userId",
+       "through": "Friendship"
+
+      },
+      "is_friend_of": {
+        "type": "hasMany",
+        "model": "MyUser",
+        "foreignKey": "friendId",
+        "through": "Friendship"
+      }
+
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "login"
+    }
+  ],
+  "methods": {}
+}

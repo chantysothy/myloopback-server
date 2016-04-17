@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1>SimpleLoopback: Users</h1>
+
+    <% if (locals.subtitle) { %>
+    <h2><%= subtitle %></h2>
+  <% } %>
+
+  <% if (locals.user) { %>
+  <div class="alert alert-info">
+  <h4> Logged as <%= user.username %> </h4>
+  id: <%= user.id %> - email: <%= user.email %>
+    </div>
+  <% } %>
+
+  <% if (locals.loginFailed) {%><div class="alert alert-warning">login failed</div><% } %>
+  <% if (locals.login) {%><div class="alert alert-info">login ok</div><% } %>
+  <!-- form to post login -->
+
+  <form class="form-horizontal" role="form" method="post" action="/user">
+    <fieldset>
+      <legend>Login with username/password</legend>
+      <p>admin: charles / admin@darewin.xyz / banana :: user: harry / harry@darewin.xyz / peanuts</p>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="username">Username</label>
+        <div class="col-md-6">
+          <input id="username" name="username" placeholder="username" class="form-control input-md" type="text" value="<%= locals.user ? user.username : '' %>">
+
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="password">Password</label>
+        <div class="col-md-6">
+          <input id="password" name="password" placeholder="password" class="form-control input-md" type="password">
+
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="login">Login (POST)</label>
+        <div class="col-md-4">
+          <button id="login" name="login" class="btn btn-primary" type="submit">Login</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+  <form class="form-horizontal" role="form" method="get" action="/user">
+    <fieldset>
+
+      <!-- Form Name -->
+      <legend>Auth through Loopback token</legend>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="token">Token</label>
+        <div class="col-md-6">
+          <input id="access_token" name="access_token" placeholder="token" class="form-control input-md" type="text" value="<%= locals.token ? token.id : '' %>">
+
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="login">Auth (GET)</label>
+        <div class="col-md-4">
+          <button  class="btn btn-primary" type="submit">Login</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+  <form class="form-horizontal" role="form" method="get" action="/auth/facebook-token/callback" target="_blank">
+    <fieldset>
+
+      <!-- Form Name -->
+      <legend>Auth through Facebook token</legend>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="fblink">Ask for Facebook token</label>
+        <div class="col-md-4"><a href="https://developers.facebook.com/tools/explorer/" target="_blank" name="fblink">https://developers.facebook.com/tools/explorer/</a>
+        (choose correct app !)</div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="token">FacebookToken</label>
+        <div class="col-md-8">
+          <input id="access_token" name="access_token" placeholder="paste your Facebook User id here" class="form-control input-md" type="text">
+
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="login">Ask for LB token</label>
+        <div class="col-md-8">
+          <button id="fblogin" name="fblogin" class="btn btn-primary" type="submit">GET</button>  path: {api}/auth/facebook-token/callback?access_token=YOUR_FB_LTT
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+
+
+
+  <!-- with array -->
+  <% if (locals.messages) { %>
+    <p><%= messages.length %> occurences</p>
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Categorie</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+
+
+    <% for(var i=0; i<messages.length; i++) {
+       if (messages[i].category()){categoryname=messages[i].category().name}else{categoryname=""}
+    %>
+
+      <tr>
+        <td><%= messages[i].name %></td>
+        <td><%= messages[i].description %></td>
+        <td><%= messages[i].categoryId %> - <%= categoryname %></td>
+        <td><button class="delete" formaction="/api/Messages/<%= messages[i].id %>">DEL</button>
+          </td>
+      </tr>
+    <% } %>
+    </tbody>
+    </table>
+
+
+  <% } %>
+
+</div>
+
+</body>
+</html>

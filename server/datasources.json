@@ -1,0 +1,12 @@
+{
+  "memory": {
+    "name": "memory",
+    "connector": "memory",
+    "file": "memory.db.json"
+  },
+  "mainDS": {
+    "name": "mainDS",
+    "connector": "memory",
+    "file": "main.db.json"
+  }
+}
